@@ -1,0 +1,5 @@
+-- CREATE TABLE id_generator
+-- (
+--     gen_name  VARCHAR(255) NOT NULL PRIMARY KEY,
+--     gen_value BIGINT       NOT NULL
+-- );
