@@ -15,3 +15,7 @@ security:
   jwt:
     secret-key: 4bae5942b69f65880b3a5390b398ac8c8aa1c4a57568007c96b76cbfb6eb34bc
     expiration-time: 3600000 #1 hour
+
+logging:
+  level:
+    org.springframework.security: "TRACE"

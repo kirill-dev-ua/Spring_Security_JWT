@@ -1,5 +1,6 @@
 package pl.wsis.config;
 
+import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,6 +20,7 @@ import pl.wsis.service.JwtService;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -56,18 +58,22 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 if (jwtService.isTokenValid(jwt, userDetails)) {
                     String role = (String) jwtService.extractAllClaims(jwt).get("role");
 
+                    Claims claims = jwtService.extractAllClaims(jwt);
                     Collection<GrantedAuthority> authorities = new ArrayList<>();
+                    List<String> permissions = (List<String>) claims.get("permissions");
+                    for (String s : permissions) {
+                        authorities.add(new SimpleGrantedAuthority(s));
+                    }
+
                     if (role != null) {
                         authorities.add(new SimpleGrantedAuthority(role));
                     }
-
                     UsernamePasswordAuthenticationToken authToken =
                             new UsernamePasswordAuthenticationToken(
                                     userDetails,
                                     null,
                                     authorities
                             );
-
                     authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authToken);
                 }

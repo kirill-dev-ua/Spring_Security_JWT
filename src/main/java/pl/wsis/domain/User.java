@@ -29,18 +29,29 @@ public class User implements UserDetails {
     private Date createdAt;
     @UpdateTimestamp
     private Date updatedAt;
+    //ToDo
+//    private boolean enabled = true;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+//    @Override
+//    public boolean isEnabled() {
+//        return this.enabled;
+//    }
+
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "role_id", nullable = false)
     private Role role;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        return List.of(role);
     }
 
     @Override
     public String getUsername() {
         return email;
+    }
+
+    public String getRoleName(){
+        return role.getName();
     }
 }

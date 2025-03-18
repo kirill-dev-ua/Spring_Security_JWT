@@ -9,9 +9,6 @@ import pl.wsis.dto.security.RegisterUserDto;
 import pl.wsis.service.AuthenticationService;
 import pl.wsis.service.JwtService;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @RestController
 @RequestMapping("/auth")
 public class AuthenticationController {
@@ -33,15 +30,7 @@ public class AuthenticationController {
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody LoginUserDto loginUserDto) {
         User authenticatedUser = authenticationService.login(loginUserDto);
-
-
-        Map<String, Object> claims = new HashMap<>();
-        claims.put("role", authenticatedUser.getRole().getName());
-        String jwtToken = jwtService.generateToken(claims, authenticatedUser);
-
-
-
-//        String jwtToken = jwtService.generateToken(authenticatedUser);
+        String jwtToken = jwtService.generateToken(authenticatedUser);
         LoginResponse loginResponse = new LoginResponse();
         loginResponse.setToken(jwtToken);
 //        loginResponse.setExpiresIn(jwtService.getExpirationTime(jwtToken));

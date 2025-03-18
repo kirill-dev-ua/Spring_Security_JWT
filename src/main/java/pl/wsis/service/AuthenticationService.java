@@ -15,9 +15,7 @@ import pl.wsis.dto.security.RegisterUserDto;
 import pl.wsis.repository.RoleRepository;
 import pl.wsis.repository.UserRepository;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -40,12 +38,14 @@ public class AuthenticationService {
     }
 
     public User login(LoginUserDto dto) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(dto.getEmail(),
-                        dto.getPassword()));
-
-        // поставил findByEmailFetchRole !!!!!!!!!
-        return userRepository.findByEmailFetchRole(dto.getEmail()).orElseThrow(() ->
-                new UsernameNotFoundException(dto.getEmail()));
+        Optional<User> user = userRepository.findByEmail(dto.getEmail());
+        if (user.isPresent()) {
+            User you = user.get();
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(you,
+                            dto.getPassword()));
+            return you;
+        }
+        return null;
     }
 }
