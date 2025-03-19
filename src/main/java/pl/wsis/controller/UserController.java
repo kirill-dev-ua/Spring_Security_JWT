@@ -28,24 +28,7 @@ public class UserController {
         return ResponseEntity.ok(userService.getAllUsers());
     }
 
-//    @PreAuthorize("hasAuthority('canBlockUser') or hasAnyAuthority('ADMIN', 'MANAGER')")
-//    @PostMapping("/users/block")
-//    public ResponseEntity<String> blockUser(@RequestParam String email){
-//        String currentUserEmail = SecurityContextHolder.getContext().getAuthentication().getName();
-//        User currentUser = userService.findByEmail(currentUserEmail);
-//        User forBlock = userService.findByEmail(email);
-//        if (currentUser.getEmail().equals(email)) {
-//            return ResponseEntity.badRequest().body("Нельзя заблокировать самого себя");
-//        }
-//        if ("ADMIN".equals(forBlock.getRole().getName())) {
-//            return ResponseEntity.badRequest().body("Нельзя заблокировать пользователя с ролью ADMIN");
-//        }
-//        userService.blockUser(forBlock);
-//        return ResponseEntity.ok("Пользователь заблокирован");
-//    }
-
-
-    @PreAuthorize("hasAuthority('canBlockUser') or hasAnyAuthority('ADMIN', 'MANAGER')")
+    @PreAuthorize("hasAuthority('CAN_BLOCK_USER') or hasAnyAuthority('ADMIN', 'MANAGER')")
     @PostMapping("/users/block")
     public ResponseEntity<String> blockUser(@RequestParam String email){
         return ResponseEntity.ok(userService.blockUser(email));

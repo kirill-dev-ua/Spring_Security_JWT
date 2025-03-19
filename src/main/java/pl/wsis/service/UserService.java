@@ -2,6 +2,7 @@ package pl.wsis.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,6 +18,7 @@ import pl.wsis.repository.UserRepository;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -53,22 +55,16 @@ public class UserService {
                 .orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден"));
     }
 
-//    @Transactional
-//    public void blockUser(User user) {
-//        user.setEnabled(false);
-//        userRepository.save(user);
-//    }
-
     @Transactional
     public String blockUser(String email) {
         String currentUserEmail = SecurityContextHolder.getContext().getAuthentication().getName();
         User currentUser = findByEmail(currentUserEmail);
         User forBlock = findByEmail(email);
         if (currentUser.getEmail().equals(email)) {
-            return "Нельзя заблокировать самого себя";
+            throw new NoUsersFoundException("Нельзя заблокировать самого себя");
         }
         if ("ADMIN".equals(forBlock.getRole().getName())) {
-           return "Нельзя заблокировать пользователя с ролью ADMIN";
+            throw new NoUsersFoundException("Нельзя заблокировать пользователя с ролью ADMIN");
         }
         forBlock.setEnabled(false);
         userRepository.save(forBlock);
@@ -78,10 +74,10 @@ public class UserService {
     public String addManager(String email) {
         User user = findByEmail(email);
         if (user == null) {
-            return "Пользователь с таким email не найден";
+            throw new NoUsersFoundException("Пользователь с таким email не найден");
         }
         if("ADMIN".equals(user.getRole().getName())){
-           return "Нельзя менять роль Админа";
+            throw new NoUsersFoundException("Нельзя менять роль Админа");
         }
         Role managerRole = roleRepository.findByName("MANAGER")
                 .orElseThrow(() -> new RuntimeException("Роль MANAGER не найдена"));
