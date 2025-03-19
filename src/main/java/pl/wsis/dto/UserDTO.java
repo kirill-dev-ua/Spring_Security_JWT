@@ -19,6 +19,7 @@ public class UserDTO {
     private RoleDTO role;
     private Date createdAt;
     private Date updatedAt;
+    private boolean enabled;
 
     public UserDTO(User user) {
         this.id = user.getId();
@@ -38,13 +39,14 @@ public class UserDTO {
     }
 
     public UserDTO(long id, String fullName, String email,
-                   Date createdAt, Date updatedAt, Role role) {
+                   Date createdAt, Date updatedAt, Role role, boolean enabled) {
         this.id = id;
         this.fullName = fullName;
         this.email = email;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.role = new RoleDTO(role.getId(), role.getName());
+        this.enabled = enabled;
     }
 
     public UserDTO(int id, String name, String password) {

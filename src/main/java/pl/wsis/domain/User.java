@@ -29,13 +29,12 @@ public class User implements UserDetails {
     private Date createdAt;
     @UpdateTimestamp
     private Date updatedAt;
-    //ToDo
-//    private boolean enabled = true;
+    private boolean enabled = true;
 
-//    @Override
-//    public boolean isEnabled() {
-//        return this.enabled;
-//    }
+    @Override
+    public boolean isEnabled() {
+        return this.enabled;
+    }
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "role_id", nullable = false)

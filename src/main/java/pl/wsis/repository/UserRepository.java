@@ -14,7 +14,7 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByEmail(String email);
 
-    @Query("select new pl.wsis.dto.UserDTO(u.id, u.fullName, u.email, u.createdAt, u.updatedAt, u.role) from User u")
+    @Query("select new pl.wsis.dto.UserDTO(u.id, u.fullName, u.email, u.createdAt, u.updatedAt, u.role, u.enabled) from User u")
     List<UserDTO> findAllUsers();
 
     @Query("SELECT u FROM User u JOIN FETCH u.role WHERE u.email = :email")

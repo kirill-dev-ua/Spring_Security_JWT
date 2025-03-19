@@ -7,6 +7,7 @@ create table users
     role_id  bigint       not null,
     created_at timestamp,
     updated_at timestamp,
+    enabled boolean,
     constraint pk_users primary key (id),
     constraint fk_users foreign key (role_id) references roles(id) on delete cascade
 );

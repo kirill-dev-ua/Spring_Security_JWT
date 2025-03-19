@@ -34,6 +34,7 @@ public class AuthenticationService {
         user.setPassword(passwordEncoder.encode(dto.getPassword()));
         user.setEmail(dto.getEmail());
         user.setRole(role);
+        user.setEnabled(true);
         return userRepository.save(user);
     }
 
@@ -48,4 +49,9 @@ public class AuthenticationService {
         }
         return null;
     }
+
+//    public User login(LoginUserDto dto) {
+//        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(dto.getEmail(), dto.getPassword()));
+//        return userRepository.findByEmail(dto.getEmail()).orElseThrow(() -> new UsernameNotFoundException(dto.getEmail()));
+//    }
 }
