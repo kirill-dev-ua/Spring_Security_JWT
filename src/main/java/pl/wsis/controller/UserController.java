@@ -2,13 +2,8 @@ package pl.wsis.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import pl.wsis.domain.Role;
-import pl.wsis.domain.User;
 import pl.wsis.dto.UserDTO;
 import pl.wsis.service.UserService;
 
@@ -17,8 +12,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/admin")
 @RequiredArgsConstructor
-// Любой пользователь у которого есть canBlockUser(Permission) не может блокнуть сам себя
-// Любой пользователь у которого есть canBlockUser(Permission) не может блокнуть пользователя с ролью ADMIN.
 public class UserController {
     private final UserService userService;
 

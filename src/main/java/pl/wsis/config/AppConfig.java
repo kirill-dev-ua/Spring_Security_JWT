@@ -20,7 +20,6 @@ public class AppConfig {
         this.userRepository = userRepository;
     }
 
-    // поставил findByEmailFetchRole !!!!!!!!!
     @Bean
     UserDetailsService userDetailsService() {
         return username -> userRepository.findByEmailFetchRole(username)
